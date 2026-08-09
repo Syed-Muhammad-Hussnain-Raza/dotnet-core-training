@@ -1,76 +1,52 @@
 # .NET Core Training
 
-This repository contains my backend development work completed during my industrial internship and .NET Core training.
+## Week 2 - Assignment 2
 
-The project is developed incrementally, with each training assignment extending the existing codebase through feature branches and Pull Requests. As the training progresses, new concepts, design patterns, and backend technologies are integrated into the same application.
+Extends the Week 1 User Management API with a layered architecture: services, dependency injection, AutoMapper, generic API responses, API versioning, and Swagger documentation.
 
-## Planned Learning Roadmap
+## What's New
 
-- C# Fundamentals
-- ASP.NET Core Web API
-- CRUD Operations
-- MVC Architecture
-- Dependency Injection
-- Services
-- AutoMapper
-- Generic Responses
-- Swagger
-- Entity Framework Core
-- SQL Server
-- Generic Repository Pattern
-- ASP.NET Core Identity
-- JWT Authentication & Authorization
-- Email Services
-- Pagination, Filtering & Sorting
-- Error Handling
-- Logging
-- Clean Architecture
-
-## Workflow
-
-- Create a feature branch for each assignment or feature.
-- Implement the required functionality.
-- Submit changes through a Pull Request.
-- Merge approved changes into the `main` branch.
-
-## Technologies
-
-- C#
-- ASP.NET Core
-- .NET
-- Entity Framework Core
-- SQL Server
-- Swagger
-- Postman
-- Git & GitHub
-
-## Status
-
-This repository is under active development and will be updated throughout the internship as new backend concepts are learned and implemented.
-
----
-
-## Week 1 - Assignment 1
-
-User Management API built with ASP.NET Core Web API.
+- **Generic responses** - every endpoint returns a consistent `{ success, message, data }` shape via `ApiResponse<T>`
+- **Dependency injection** - `IUserService` is injected into the controller instead of the controller managing data directly
+- **Service layer** - business logic moved out of the controller into `UserService`
+- **AutoMapper** - maps `UserDto` to the `User` domain model
+- **DTOs** - `UserDto` (in its own `Dtos` folder) defines the API's input contract, separate from the `User` domain model, with validation via DataAnnotations
+- **Swagger** - interactive API docs and testing UI
+- **Versioned routes** - all endpoints are now under `api/v{version}/users`
 
 ## Endpoints
 
-- GET /api/users - Get all users
-- GET /api/users/{id} - Get user by id
-- POST /api/users - Add new user
-- PUT /api/users/{id} - Update user
-- DELETE /api/users/{id} - Delete user
+- `GET api/v1/users`         - Get all users
+- `GET api/v1/users/{id}`    - Get user by id
+- `POST api/v1/users`        - Add new user
+- `PUT api/v1/users/{id}`    - Update user
+- `DELETE api/v1/users/{id}` - Delete user
+
+All responses are wrapped as:
+```json
+{
+  "success": true,
+  "message": "User fetched successfully.",
+  "data": { }
+}
+```
+
+## Project Structure
+
+```
+MyAssignment/
+├── Constants/       # UserMessages, MembershipTypes
+├── Controllers/     # UserController
+├── Dtos/            # UserDto
+├── Helper/          # ApiResponse<T>, MappingProfile
+├── Models/          # User
+├── Services/        # IUserService, UserService
+└── Program.cs
+```
 
 ## How to Run
 
 1. Clone the repo
 2. Open in Visual Studio
 3. Run the project
-4. Test with Postman
-
----
-
-## Author
-
-Syed Muhammad Hussnain Raza
+4. Browse to `/swagger` to explore and test endpoints interactively, or test with Postman
